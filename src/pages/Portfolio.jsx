@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaLock } from 'react-icons/fa';
 import { BiCodeAlt } from 'react-icons/bi';
 
 function Portfolio() {

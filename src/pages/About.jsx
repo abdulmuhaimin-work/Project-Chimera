@@ -31,6 +31,45 @@ function About() {
                   "Automate build, test and deployment of pipelines using Gitlab and Jenkins"
                 ]
               },
+              {
+                title: "Mid-level Developer",
+                company: "Nematix Sdn Bhd, Seri Kembangan",
+                period: "August 2023 – August 2024",
+                duties: [
+                  "Built responsive web applications using Typescript and React",
+                  "Collaborated with designers to implement user-friendly interfaces",
+                  "Develop Interactive Data Visualization dashboards using React Charts and CubeJS",
+                  "Implemented GIS related features using Google Maps API and Kinetica",
+                  "Achieved at least 2 hours of development time saving per module by developing scripts to automate boilerplate tasks",
+                  "Implemented authentication and authorization using Supertokens and Supabase Auth",
+                  "Participated in daily stand-ups and sprint planning meetings"
+                ]
+              },
+              {
+                title: "Front End Developer",
+                company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
+                period: "September 2021 – August 2023",
+                duties: [
+                  "Developed and maintained web applications using ReactJS and Bootstrap",
+                  "Implemented authentication and authorization using Firebase Auth",
+                  "Developed and maintained RESTful APIs using Firebase Cloud Functions",
+                  "Developed backend services using NodeJS and Express",
+                  "Implemented payment processing using Stripe",
+                  "Implemented database using Firebase and MongoDB"
+                ]
+              },
+              {
+                title: "Software Developer",
+                company: "Elm Lab Sdn Bhd, Beranang",
+                period: "February 2020 – April 2020",
+                duties: [
+                  "Heavily involved in the development of the landing page to onboard new users of the system",
+                  "Develop the front end interface and integrate with RESTful API",
+                  "Ensure deliverables and tasks were completed on time for project delivery date"
+                ]
+              }
+
+              
             ].map((exp, index) => (
               <div 
                 key={exp.title}

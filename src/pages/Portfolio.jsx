@@ -17,30 +17,35 @@ function Portfolio() {
       description: "A web app to manage workshops owner and users daily activity",
       techStack: ["ReactJS", "Firebase", "Bootstrap", "Cloudfunction"],
       image: "/project-1.jpg", // You'll need to add project images
+      link: "https://business.sfera.ai"
     },
     {
       title: "Stripe Payment Server",
       description: "Back-end API for the payment system to integrate the payment of our various apps with the Stripe payment system.",
       techStack: ["ExpressJS", "NodeJS", "MongoDB"],
       image: "/project-2.jpg",
+      link: "Private Company Project"
     },
     {
       title: "Autonomous Vehicle Dashboard",
       description: "Tasked with developing the dashboard for displaying data that was pulled from our autonomous vehicle",
       techStack: ["ReactJS"],
       image: "/project-3.jpg",
+      link: "Private Company Project"
     },
     {
       title: "Forklift Management System Integration",
       description: "Project scope is to integrate data from our system to client old system",
       techStack: ["React", "Firebase"],
       image: "/project-4.jpg",
+      link: "Private Company Project"
     },
     {
       title: "MicroFrontend Analytics Module",
       description: "Develope a dynamic dashboard module for an analytics and monitoring system.",
       techStack: ["Typescript", "TailwindCSS", "ReactJS", "CubeJS", "Vite", "NodeJS"],
       image: "/project-5.jpg",
+      link: "Private Company Project"
     }
   ];
 
@@ -97,12 +102,19 @@ function Portfolio() {
                   >
                     <FaGithub /> Code
                   </a>
-                  <a 
-                    href="#" 
-                    className="flex items-center gap-2 text-primary hover:text-primary/80 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                  >
-                    <FaExternalLinkAlt /> Live Demo
-                  </a>
+                  {project.link && project.link !== "Private Company Project" && (
+                    <a 
+                      href={project.link} 
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    >
+                      <FaExternalLinkAlt /> Live Demo
+                    </a>
+                  )}
+                  {project.link && project.link === "Private Company Project" && (
+                    <span className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                      <FaLock /> Private Company Project
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

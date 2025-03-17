@@ -1,8 +1,61 @@
 import { FaBriefcase, FaGraduationCap, FaLanguage } from 'react-icons/fa';
 import { BsBuilding } from 'react-icons/bs';
 import { HiCalendar } from 'react-icons/hi';
+import InteractiveTimeline from '../components/InteractiveTimeline';
+import SkillsChart from '../components/SkillsChart';
 
 function About() {
+  // Work experience data for the timeline
+  const workExperiences = [
+    {
+      period: "August 2024 – Present",
+      title: "Consultant, Full Stack Developer",
+      company: "Bestinet Sdn Bhd, Kuala Lumpur",
+      description: "Developed and maintained web applications using NextJS, Typescript and TailwindCSS. Implemented integration with microservices API. Planned and implemented new features and improvements. Automated build, test and deployment of pipelines using Gitlab and Jenkins.",
+      technologies: ["NextJS", "TypeScript", "TailwindCSS", "GitLab", "Jenkins"]
+    },
+    {
+      period: "August 2023 – August 2024",
+      title: "Mid-level Developer",
+      company: "Nematix Sdn Bhd, Seri Kembangan",
+      description: "Built responsive web applications using Typescript and React. Collaborated with designers to implement user-friendly interfaces. Developed Interactive Data Visualization dashboards using React Charts and CubeJS. Implemented GIS related features using Google Maps API and Kinetica.",
+      technologies: ["React", "TypeScript", "CubeJS", "Google Maps API", "Kinetica", "Supertokens", "Supabase"]
+    },
+    {
+      period: "September 2021 – August 2023",
+      title: "Front End Developer",
+      company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
+      description: "Developed and maintained web applications using ReactJS and Bootstrap. Implemented authentication and authorization using Firebase Auth. Developed and maintained RESTful APIs using Firebase Cloud Functions. Developed backend services using NodeJS and Express.",
+      technologies: ["React", "Bootstrap", "Firebase", "NodeJS", "Express", "Stripe", "MongoDB"]
+    },
+    {
+      period: "February 2020 – April 2020",
+      title: "Software Developer",
+      company: "Elm Lab Sdn Bhd, Beranang",
+      description: "Heavily involved in the development of the landing page to onboard new users of the system. Developed the front end interface and integrated with RESTful API. Ensured deliverables and tasks were completed on time for project delivery date.",
+      technologies: ["HTML", "CSS", "JavaScript", "RESTful API"]
+    }
+  ];
+
+  // Skills data for the skills chart
+  const skills = [
+    { name: "React", level: 90, category: "Frontend" },
+    { name: "TypeScript", level: 85, category: "Frontend" },
+    { name: "NextJS", level: 80, category: "Frontend" },
+    { name: "TailwindCSS", level: 95, category: "Frontend" },
+    { name: "JavaScript", level: 95, category: "Frontend" },
+    { name: "HTML5/CSS3", level: 90, category: "Frontend" },
+    { name: "NodeJS", level: 75, category: "Backend" },
+    { name: "Express", level: 70, category: "Backend" },
+    { name: "Firebase", level: 85, category: "Backend" },
+    { name: "MongoDB", level: 65, category: "Backend" },
+    { name: "Supabase", level: 75, category: "Backend" },
+    { name: "Git", level: 85, category: "Tools" },
+    { name: "GitLab CI/CD", level: 70, category: "Tools" },
+    { name: "Jenkins", level: 60, category: "Tools" },
+    { name: "Figma", level: 65, category: "Design" }
+  ];
+
   return (
     <div className="min-h-screen pt-20 px-4 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
@@ -18,88 +71,22 @@ function About() {
             <FaBriefcase className="text-2xl text-primary dark:text-blue-400" />
             <h2 className="text-3xl font-bold dark:text-white">Work Experience</h2>
           </div>
-          <div className="space-y-8">
-            {[
-              {
-                title: "Consultant, Full Stack Developer",
-                company: "Bestinet Sdn Bhd, Kuala Lumpur",
-                period: "August 2024 – Present",
-                duties: [
-                  "Developed and maintained web applications using NextJS, Typescript and TailwindCSS",
-                  "Implemented integration with microservices API",
-                  "Planned and implemented new features and improvements",
-                  "Automate build, test and deployment of pipelines using Gitlab and Jenkins"
-                ]
-              },
-              {
-                title: "Mid-level Developer",
-                company: "Nematix Sdn Bhd, Seri Kembangan",
-                period: "August 2023 – August 2024",
-                duties: [
-                  "Built responsive web applications using Typescript and React",
-                  "Collaborated with designers to implement user-friendly interfaces",
-                  "Develop Interactive Data Visualization dashboards using React Charts and CubeJS",
-                  "Implemented GIS related features using Google Maps API and Kinetica",
-                  "Achieved at least 2 hours of development time saving per module by developing scripts to automate boilerplate tasks",
-                  "Implemented authentication and authorization using Supertokens and Supabase Auth",
-                  "Participated in daily stand-ups and sprint planning meetings"
-                ]
-              },
-              {
-                title: "Front End Developer",
-                company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
-                period: "September 2021 – August 2023",
-                duties: [
-                  "Developed and maintained web applications using ReactJS and Bootstrap",
-                  "Implemented authentication and authorization using Firebase Auth",
-                  "Developed and maintained RESTful APIs using Firebase Cloud Functions",
-                  "Developed backend services using NodeJS and Express",
-                  "Implemented payment processing using Stripe",
-                  "Implemented database using Firebase and MongoDB"
-                ]
-              },
-              {
-                title: "Software Developer",
-                company: "Elm Lab Sdn Bhd, Beranang",
-                period: "February 2020 – April 2020",
-                duties: [
-                  "Heavily involved in the development of the landing page to onboard new users of the system",
-                  "Develop the front end interface and integrate with RESTful API",
-                  "Ensure deliverables and tasks were completed on time for project delivery date"
-                ]
-              }
-
-              
-            ].map((exp, index) => (
-              <div 
-                key={exp.title}
-                className="card p-6 transform transition-all duration-500"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <BsBuilding className="text-gray-600 dark:text-gray-400" />
-                      <h3 className="text-xl font-semibold dark:text-white">{exp.title}</h3>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400">{exp.company}</p>
-                  </div>
-                  <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-                    <HiCalendar />
-                    <span className="text-sm">{exp.period}</span>
-                  </div>
-                </div>
-                <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
-                  {exp.duties.map((duty, i) => (
-                    <li key={i}>{duty}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          
+          {/* Interactive Timeline Component */}
+          <InteractiveTimeline experiences={workExperiences} />
         </section>
 
         <section className="mb-16 slide-up" style={{ animationDelay: '400ms' }}>
+          <div className="flex items-center gap-3 mb-8">
+            <FaBriefcase className="text-2xl text-primary dark:text-blue-400" />
+            <h2 className="text-3xl font-bold dark:text-white">Technical Skills</h2>
+          </div>
+          
+          {/* Skills Chart Component */}
+          <SkillsChart skills={skills} />
+        </section>
+
+        <section className="mb-16 slide-up" style={{ animationDelay: '600ms' }}>
           <div className="flex items-center gap-3 mb-8">
             <FaGraduationCap className="text-2xl text-primary dark:text-blue-400" />
             <h2 className="text-3xl font-bold dark:text-white">Education</h2>
@@ -115,7 +102,7 @@ function About() {
           </div>
         </section>
 
-        <section className="mb-16 slide-up" style={{ animationDelay: '600ms' }}>
+        <section className="mb-16 slide-up" style={{ animationDelay: '800ms' }}>
           <div className="flex items-center gap-3 mb-8">
             <FaLanguage className="text-2xl text-primary dark:text-blue-400" />
             <h2 className="text-3xl font-bold dark:text-white">Languages</h2>

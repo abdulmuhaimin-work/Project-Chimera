@@ -5,32 +5,57 @@
 @layer base {
   body {
     @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200;
+    cursor: none; /* Hide default cursor when using custom cursor */
+  }
+  
+  /* Hide default cursor on clickable elements */
+  a, button, .btn, [role="button"] {
+    @apply cursor-none;
   }
 }
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-md font-medium transition-all duration-300;
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300
+           relative overflow-hidden z-10;
+  }
+  
+  .btn:after {
+    @apply content-[''] absolute top-0 left-0 w-full h-0 bg-white/20 
+           transition-all duration-300 z-[-1];
+  }
+  
+  .btn:hover:after {
+    @apply h-full;
   }
   
   .btn.primary {
-    @apply bg-primary text-white hover:bg-primary/90 dark:hover:bg-primary/80;
+    @apply bg-primary text-white hover:bg-primary/90 dark:hover:bg-primary/80
+           transform hover:-translate-y-1 hover:shadow-lg;
   }
   
   .btn.secondary {
     @apply border-2 border-secondary text-secondary hover:bg-secondary/10 
-    dark:border-gray-400 dark:text-gray-400 dark:hover:bg-gray-700;
+           dark:border-gray-400 dark:text-gray-400 dark:hover:bg-gray-700
+           transform hover:-translate-y-1 hover:shadow-lg;
   }
 
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md 
+           transition-all duration-300 transform hover:-translate-y-1;
   }
 
   .section-title {
-    @apply text-3xl font-bold text-gray-900 dark:text-white mb-8;
+    @apply text-3xl font-bold text-gray-900 dark:text-white mb-8 
+           relative inline-block;
+  }
+  
+  .section-title:after {
+    @apply content-[''] absolute -bottom-2 left-0 w-2/3 h-1 bg-primary 
+           dark:bg-blue-400 rounded;
   }
 
-  /* Add animation classes */
+  /* Add enhanced animation classes */
   .fade-in {
     @apply opacity-0 animate-[fadeIn_0.5s_ease-in_forwards];
   }
@@ -42,6 +67,14 @@
   .slide-in {
     @apply opacity-0 -translate-x-4 animate-[slideIn_0.5s_ease-out_forwards];
   }
+  
+  .bounce-in {
+    @apply opacity-0 scale-95 animate-[bounceIn_0.5s_cubic-bezier(0.175,0.885,0.32,1.275)_forwards];
+  }
+  
+  .rotate-in {
+    @apply opacity-0 rotate-6 animate-[rotateIn_0.5s_ease-out_forwards];
+  }
 }
 
 /* Add custom animations */
@@ -51,6 +84,15 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
@@ -73,5 +115,64 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(6deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0);
   }
 } 

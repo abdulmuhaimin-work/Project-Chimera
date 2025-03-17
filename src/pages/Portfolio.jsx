@@ -150,7 +150,8 @@ function Portfolio() {
         { name: "CSS", icon: <SiCss3 /> }
       ],
       image: "/placeholder-portfolio.jpg",
-      repoUrl: "https://github.com/yourusername/portfolio-website",
+      repoUrl: "https://github.com/abdulmuhaimin-work/Project-Chimera",
+      liveUrl: "https://abdulmuhaimin.my",
       timeline: "2 months",
       role: "Full-stack Developer",
       client: "Personal Project",

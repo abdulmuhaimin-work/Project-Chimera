@@ -5,27 +5,27 @@ import SkillsChart from '../components/SkillsChart';
 function Home() {
   // Sample testimonials data
   const testimonials = [
-    {
-      name: "Sarah Johnson",
-      title: "Project Manager at TechCorp",
-      quote: "Abdul delivered our project ahead of schedule and exceeded our expectations. His technical expertise and ability to translate complex requirements into elegant solutions is remarkable.",
-      rating: 5,
-      avatar: "https://randomuser.me/api/portraits/women/32.jpg"
-    },
-    {
-      name: "Michael Chen",
-      title: "CEO of StartupX",
-      quote: "Working with Abdul was a game-changer for our startup. He quickly understood our vision and built a platform that our users love. His attention to detail and focus on performance made all the difference.",
-      rating: 5,
-      avatar: "https://randomuser.me/api/portraits/men/91.jpg"
-    },
-    {
-      name: "Priya Patel",
-      title: "UI/UX Designer",
-      quote: "As a designer, I appreciate developers who can bring my designs to life exactly as envisioned. Abdul did that and more, suggesting improvements that enhanced the user experience while maintaining the design integrity.",
-      rating: 4,
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg"
-    }
+    // {
+    //   name: "Sarah Johnson",
+    //   title: "Project Manager at TechCorp",
+    //   quote: "Abdul delivered our project ahead of schedule and exceeded our expectations. His technical expertise and ability to translate complex requirements into elegant solutions is remarkable.",
+    //   rating: 5,
+    //   avatar: "https://randomuser.me/api/portraits/women/32.jpg"
+    // },
+    // {
+    //   name: "Michael Chen",
+    //   title: "CEO of StartupX",
+    //   quote: "Working with Abdul was a game-changer for our startup. He quickly understood our vision and built a platform that our users love. His attention to detail and focus on performance made all the difference.",
+    //   rating: 5,
+    //   avatar: "https://randomuser.me/api/portraits/men/91.jpg"
+    // },
+    // {
+    //   name: "Priya Patel",
+    //   title: "UI/UX Designer",
+    //   quote: "As a designer, I appreciate developers who can bring my designs to life exactly as envisioned. Abdul did that and more, suggesting improvements that enhanced the user experience while maintaining the design integrity.",
+    //   rating: 4,
+    //   avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+    // }
   ];
 
   // Sample skills data with more detailed information
@@ -62,10 +62,10 @@ function Home() {
         <SkillsChart skills={skills} />
       </section>
 
-      <section className="py-16 px-4">
+      {/* <section className="py-16 px-4">
         <h2 className="section-title text-center mx-auto mb-12">What Clients Say</h2>
         <TestimonialsCarousel testimonials={testimonials} />
-      </section>
+      </section> */}
       
       <section className="py-16 px-4 bg-gradient-to-br from-primary/10 to-tertiary/10 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-4xl mx-auto text-center">

@@ -149,7 +149,7 @@ function Portfolio() {
         { name: "JavaScript", icon: <SiJavascript /> },
         { name: "CSS", icon: <SiCss3 /> }
       ],
-      image: "/placeholder-portfolio.jpg",
+      image: "/portfolioweb.png",
       repoUrl: "https://github.com/abdulmuhaimin-work/Project-Chimera",
       liveUrl: "https://abdulmuhaimin.my",
       timeline: "2 months",
@@ -492,22 +492,18 @@ function Portfolio() {
         { name: "CSS", icon: <SiCss3 /> },
         { name: "JavaScript", icon: <SiJavascript /> }
       ],
-      image: "/project-6.jpg",
+      image: "/math.png",
       liveUrl: "https://test-bridge-seven.vercel.app/",
       repoUrl: "https://github.com/abdulmuhaimin-work/test-bridge",
-      timeline: "3 weeks",
+      timeline: "1 weeks",
       role: "Developer",
       client: "Personal Project",
       challenges: [
-        "Creating dynamically generated math problems of appropriate difficulty",
+        // "Creating dynamically generated math problems of appropriate difficulty",
         "Designing a user interface suitable for younger users",
         "Implementing reliable score tracking without a backend"
       ],
       approach: [
-        { 
-          title: "Problem Generation Algorithm", 
-          description: "Developed algorithms to generate varied yet appropriately difficult math problems based on user performance." 
-        },
         { 
           title: "Responsive Design", 
           description: "Created a mobile-first interface that works well on all devices, including tablets used in educational settings." 
@@ -518,9 +514,6 @@ function Portfolio() {
         }
       ],
       results: [
-        { value: "500+", label: "Active users" },
-        { value: "15 min", label: "Average session duration" },
-        { value: "70%", label: "Quiz completion rate" }
       ]
     }
   ];

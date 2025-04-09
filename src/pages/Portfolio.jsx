@@ -515,6 +515,49 @@ function Portfolio() {
       ],
       results: [
       ]
+    },
+    {
+      id: 7,
+      title: "Sanatoria",
+      description: "A horror game developed in Unity during a 1-month game jam at REKA.",
+      overview: "Sanatoria is an atmospheric horror game that immerses players in a tense, psychological experience. Developed during a one-month game jam at REKA, the game demonstrates rapid prototyping, 3D environment design, and gameplay mechanics that create suspense and fear.",
+      problem: "Creating an engaging horror experience requires carefully balanced gameplay mechanics, atmospheric sound design, and visual elements that work together to create tension without frustrating players.",
+      solution: "We focused on creating a psychologically tense atmosphere through strategic lighting, immersive sound design, and unpredictable enemy AI rather than relying solely on jump scares.",
+      outcome: "The game was successfully completed within the one-month time constraint and received positive feedback from game jam judges and players for its atmosphere and tension-building mechanics.",
+      tags: ["Unity", "C#", "3D", "Game Development", "Horror"],
+      techStack: ["Unity", "C#"],
+      technologies: [
+        { name: "Unity", icon: <BiCodeAlt /> },
+        { name: "C#", icon: <BiCodeAlt /> }
+      ],
+      image: "/sanatoria.jpg",
+      timeline: "1 month",
+      role: "Game Developer",
+      client: "Game Jam Project",
+      challenges: [
+        "Creating a compelling horror atmosphere with limited development time",
+        "Balancing game difficulty to maintain tension without frustrating players",
+        "Optimizing 3D environments and lighting for performance"
+      ],
+      approach: [
+        { 
+          title: "Rapid Prototyping", 
+          description: "Used an iterative development approach to quickly test and refine game mechanics within the time constraints of the game jam." 
+        },
+        { 
+          title: "Atmospheric Design", 
+          description: "Focused on creating an immersive environment through strategic lighting, sound design, and environmental storytelling." 
+        },
+        { 
+          title: "Playtesting", 
+          description: "Conducted regular playtesting sessions to refine the horror experience and ensure game mechanics were intuitive." 
+        }
+      ],
+      results: [
+        { value: "1 month", label: "Development time" },
+        { value: "Complete", label: "Game jam submission" }
+      ],
+      liveUrl: "https://drive.google.com/drive/folders/1Snn7Z5bUt7SyO0eUhI5uYKJAvqQQbMm5?usp=sharing",
     }
   ];
 

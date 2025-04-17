@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import About from './pages/About';
+import About3D from './pages/About3D';
 import Portfolio from './pages/Portfolio';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
@@ -32,7 +32,7 @@ function App() {
             } />
             <Route path="/about" element={
               <PageTransition>
-                <About />
+                <About3D />
               </PageTransition>
             } />
             <Route path="/portfolio" element={

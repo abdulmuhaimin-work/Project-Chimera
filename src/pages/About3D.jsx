@@ -137,7 +137,7 @@ function About3D() {
       )
       .normalize();
     
-    const targetRotation = Math.atan2(direction.x, direction.z);
+    const targetRotation = Math.atan2(direction.y, direction.x);
     setCharacterRotation([0, targetRotation, 0]);
     
     // Animate movement

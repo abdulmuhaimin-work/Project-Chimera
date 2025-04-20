@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment, Text, useGLTF } from '@react-three/drei';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -17,35 +17,62 @@ function Character({ position, rotation }) {
 }
 
 function House({ position, rotation, onClick, isActive, company }) {
-  console.log(`House component rendering for ${company} at position:`, position);
+  const { scene } = useGLTF('/models/building_07.glb');
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone();
+    // Create hover material
+    const hoverMaterial = new THREE.MeshStandardMaterial({ color: 'hotpink' });
+    
+    clone.traverse((child) => {
+      if (child.isMesh) {
+        // Store original material and hover material
+        child.userData.originalMaterial = child.material;
+        child.userData.hoverMaterial = hoverMaterial;
+      }
+    });
+    return clone;
+  }, [scene]);
+
+  // Calculate ground elevation at this position
+  const groundElevation = useMemo(() => {
+    const x = position[0];
+    const z = position[2];
+    const wave1 = Math.sin(x * 0.1) * 2;
+    const wave3 = Math.sin(z * 0.1) * 2;
+    return (wave1 + wave3) * 1.5;
+  }, [position]);
+  
   return (
-    <group position={position} rotation={rotation}>
-      <mesh 
+    <group position={[position[0], groundElevation, position[2]]} rotation={rotation}>
+      <group
         onClick={onClick}
         onPointerOver={(e) => {
-          e.object.material.color.set('hotpink');
           document.body.style.cursor = 'pointer';
+          // Switch to hover material
+          clonedScene.traverse((child) => {
+            if (child.isMesh) {
+              child.material = child.userData.hoverMaterial;
+            }
+          });
         }}
         onPointerOut={(e) => {
-          e.object.material.color.set('white');
           document.body.style.cursor = 'auto';
+          // Switch back to original material
+          clonedScene.traverse((child) => {
+            if (child.isMesh) {
+              child.material = child.userData.originalMaterial;
+            }
+          });
         }}
       >
-        <boxGeometry args={[2, 2, 2]} />
-        <meshStandardMaterial color="white" />
-      </mesh>
-      {isActive && (
-        <mesh position={[0, 2, 0]}>
-          <boxGeometry args={[0.5, 0.5, 0.5]} />
-          <meshBasicMaterial color="yellow" />
-        </mesh>
-      )}
-      <mesh position={[0, 1.5, 0]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshBasicMaterial color="white" />
-      </mesh>
+        <primitive 
+          object={clonedScene} 
+          scale={[1.0, 1.0, 1.0]}
+          position={[0, 0, 0]}
+        />
+      </group>
       <Text
-        position={[0, 2.5, 0]}
+        position={[0, 3.5, 0]}
         fontSize={0.5}
         color="black"
         anchorX="center"
@@ -58,11 +85,57 @@ function House({ position, rotation, onClick, isActive, company }) {
 }
 
 function Ground() {
+  const geometry = useMemo(() => {
+    const width = 100;
+    const height = 100;
+    const widthSegments = 100;
+    const heightSegments = 100;
+    
+    const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments);
+    const vertices = geometry.attributes.position.array;
+    
+    // Add height variations
+    for (let i = 0; i < vertices.length; i += 3) {
+      const x = vertices[i];
+      const y = vertices[i + 1];
+      const z = vertices[i + 2];
+      
+      // Create a wave-like pattern
+      const wave1 = Math.sin(x * 0.1) * 2;
+      const wave3 = Math.sin(y * 0.1) * 2;
+      const wave2 = Math.cos(z * 0.1) * 2;
+      const noise = (Math.random() - 0.5) * 1;
+      
+      // vertices[i + 1] = (wave1 + wave2 + wave3 + noise) * 0.5;
+      // vertices[i + 1] = noise;
+      vertices[i+2] = ( wave1 + wave3 -2.1) * 1.5;
+    }
+    
+    geometry.computeVertexNormals();
+    return geometry;
+  }, []);
+
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
-      <planeGeometry args={[100, 100]} />
-      <meshStandardMaterial color="#f0f0f0" />
-    </mesh>
+    <group>
+      <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <primitive object={geometry} />
+        <meshStandardMaterial 
+          color="#2d5a27" 
+          wireframe={false}
+          side={THREE.DoubleSide}
+          flatShading={false}
+          roughness={0.9}
+          metalness={0.0}
+          envMapIntensity={0.2}
+        />
+      </mesh>
+      
+      {/* Grid helper */}
+      {/* <gridHelper args={[100, 20, '#ff0000', '#ff0000']} position={[0, 0, 0]} /> */}
+      
+      {/* Axes helper */}
+      <axesHelper args={[10]} />
+    </group>
   );
 }
 
@@ -91,7 +164,7 @@ function ExperienceInfo({ experience }) {
 
 function About3D() {
   const [activeHouse, setActiveHouse] = useState(null);
-  const [characterPosition, setCharacterPosition] = useState([0, 0, 0]);
+  const [characterPosition, setCharacterPosition] = useState([0, -3, 0]);
   const [characterRotation, setCharacterRotation] = useState([0, 0, 0]);
 
   const experiences = [
@@ -101,7 +174,7 @@ function About3D() {
       company: "Bestinet Sdn Bhd, Kuala Lumpur",
       description: "Developed and maintained web applications using NextJS, Typescript and TailwindCSS. Implemented integration with microservices API. Planned and implemented new features and improvements. Automated build, test and deployment of pipelines using Gitlab and Jenkins.",
       technologies: ["NextJS", "TypeScript", "TailwindCSS", "GitLab", "Jenkins"],
-      position: [-12, 0, 0]  // Current position, left
+      position: [15, 0, -5]  // Adjusted position
     },
     {
       period: "August 2023 – August 2024",
@@ -109,7 +182,7 @@ function About3D() {
       company: "Nematix Sdn Bhd, Seri Kembangan",
       description: "Built responsive web applications using Typescript and React. Collaborated with designers to implement user-friendly interfaces. Developed Interactive Data Visualization dashboards using React Charts and CubeJS. Implemented GIS related features using Google Maps API and Kinetica.",
       technologies: ["React", "TypeScript", "CubeJS", "Google Maps API", "Kinetica", "Supertokens", "Supabase"],
-      position: [-4, 0, 0]  // Recent past, left
+      position: [5, 0, -5]  // Adjusted position
     },
     {
       period: "September 2021 – August 2023",
@@ -117,7 +190,7 @@ function About3D() {
       company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
       description: "Developed and maintained web applications using ReactJS and Bootstrap. Implemented authentication and authorization using Firebase Auth. Developed and maintained RESTful APIs using Firebase Cloud Functions. Developed backend services using NodeJS and Express.",
       technologies: ["React", "Bootstrap", "Firebase", "NodeJS", "Express", "Stripe", "MongoDB"],
-      position: [4, 0, 0]  // Further past, right
+      position: [-5, 0, -5]  // Adjusted position
     },
     {
       period: "February 2020 – April 2020",
@@ -125,11 +198,18 @@ function About3D() {
       company: "Elm Lab Sdn Bhd, Beranang",
       description: "Heavily involved in the development of the landing page to onboard new users of the system. Developed the front end interface and integrated with RESTful API. Ensured deliverables and tasks were completed on time for project delivery date.",
       technologies: ["HTML", "CSS", "JavaScript", "RESTful API"],
-      position: [12, 0, 0]  // Earliest experience, right
+      position: [-15, 0, -5]  // Adjusted position
     }
   ];
 
   const moveCharacter = (targetPosition) => {
+    // Calculate ground elevation at target position
+    const targetX = targetPosition[0];
+    const targetZ = targetPosition[2];
+    const wave1 = Math.sin(targetX * 0.1) * 2;
+    const wave3 = Math.sin(targetZ * 0.1) * 2;
+    targetPosition[1] = (wave1 + wave3) * 1.5;
+
     const direction = new THREE.Vector3()
       .subVectors(
         new THREE.Vector3(...targetPosition),
@@ -143,14 +223,18 @@ function About3D() {
     // Animate movement
     const interval = setInterval(() => {
       setCharacterPosition(prev => {
-        const newPos = [
-          prev[0] + direction.x * 0.1,
-          prev[1],
-          prev[2] + direction.z * 0.1
-        ];
+        const newX = prev[0] + direction.x * 0.1;
+        const newZ = prev[2] + direction.z * 0.1;
         
-        if (Math.abs(newPos[0] - targetPosition[0]) < 0.1 && 
-            Math.abs(newPos[2] - targetPosition[2]) < 0.1) {
+        // Calculate ground elevation at current position
+        const currentWave1 = Math.sin(newX * 0.1) * 2;
+        const currentWave3 = Math.sin(newZ * 0.1) * 2;
+        const newY = (currentWave1 + currentWave3) * 1.5;
+        
+        const newPos = [newX, newY, newZ];
+        
+        if (Math.abs(newX - targetPosition[0]) < 0.1 && 
+            Math.abs(newZ - targetPosition[2]) < 0.1) {
           clearInterval(interval);
           return targetPosition;
         }
@@ -163,29 +247,27 @@ function About3D() {
     <div className="relative w-full h-screen">
       <ExperienceInfo experience={activeHouse} />
       <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 15, 30]} />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
+        <PerspectiveCamera makeDefault position={[30, 10, 10]} />
+        <ambientLight intensity={1} />
+        <directionalLight position={[10, 20, 10]} intensity={1} />
+        <directionalLight position={[-10, 20, -10]} intensity={0.5} />
         <Environment preset="sunset" />
         <Ground />
         <Suspense fallback={null}>
           <Character position={characterPosition} rotation={characterRotation} />
-          {experiences.map((exp, index) => {
-            console.log(`Rendering house ${index} for ${exp.company} at position:`, exp.position);
-            return (
-              <House
-                key={index}
-                position={exp.position}
-                rotation={[0, Math.PI / 4, 0]}
-                onClick={() => {
-                  setActiveHouse(exp);
-                  moveCharacter(exp.position);
-                }}
-                isActive={activeHouse === exp}
-                company={exp.company.split(',')[0]}
-              />
-            );
-          })}
+          {experiences.map((exp, index) => (
+            <House
+              key={index}
+              position={exp.position}
+              rotation={[0, Math.PI / 4, 0]}
+              onClick={() => {
+                setActiveHouse(exp);
+                moveCharacter(exp.position);
+              }}
+              isActive={activeHouse === exp}
+              company={exp.company.split(',')[0]}
+            />
+          ))}
         </Suspense>
         <OrbitControls enableZoom={true} enablePan={true} />
       </Canvas>

@@ -37,6 +37,31 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
+    // @tailwindcss/line-clamp is now included by default in Tailwind CSS v3.3+
   ],
+  // Performance optimizations
+  corePlugins: {
+    // Disable unused core plugins for smaller bundle size
+    preflight: true,
+    container: true,
+    accessibility: true,
+    pointerEvents: true,
+    visibility: true,
+    position: true,
+    inset: true,
+    isolation: true,
+    zIndex: true,
+    order: true,
+    gridColumn: true,
+    gridColumnStart: true,
+    gridColumnEnd: true,
+    gridRow: true,
+    gridRowStart: true,
+    gridRowEnd: true,
+    float: true,
+    clear: true,
+    margin: true,
+    boxSizing: true,
+    lineClamp: true, // Enable line-clamp utilities
+  },
 } 

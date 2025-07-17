@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github.css'; // You can change this to other themes
+import { API_ENDPOINTS } from '../config/api';
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ function Blog() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/posts');
+        const response = await fetch(API_ENDPOINTS.posts);
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
@@ -87,7 +88,7 @@ function Blog() {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Oops! Something went wrong</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">Error: {error}</p>
           <p className="text-sm text-gray-500 dark:text-gray-500">
-            Make sure the Phoenix server is running at http://localhost:4000
+            Make sure the backend server is running and accessible
           </p>
         </div>
       </div>

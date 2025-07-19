@@ -1,29 +1,19 @@
 import { FaGlobe, FaLinkedin, FaGithub, FaGitlab, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import GitHubActivity from '../components/GitHubActivity';
+import { resumeData } from '../data/resumeData';
 
 function Contact() {
-  const socialLinks = [
-    {
-      icon: <FaGlobe />,
-      text: "Personal Website",
-      url: "https://abdulmuhaimin.my/",
-    },
-    {
-      icon: <FaLinkedin />,
-      text: "LinkedIn",
-      url: "https://www.linkedin.com/in/abdul-muhaimin-md-shahid/",
-    },
-    {
-      icon: <FaGithub />,
-      text: "GitHub",
-      url: "https://github.com/abdulmuhaimin-work",
-    },
-    {
-      icon: <FaGitlab />,
-      text: "GitLab",
-      url: "https://gitlab.com/abdulmuhaimin-work",
-    },
-  ];
+  const iconComponents = {
+    FaGlobe: <FaGlobe />,
+    FaLinkedin: <FaLinkedin />,
+    FaGithub: <FaGithub />,
+    FaGitlab: <FaGitlab />
+  };
+
+  const socialLinksWithIcons = resumeData.socialLinks.map(link => ({
+    ...link,
+    icon: iconComponents[link.icon] || <FaGlobe />
+  }));
 
   return (
     <div className="min-h-screen pt-20 px-4 dark:bg-gray-900">
@@ -39,7 +29,7 @@ function Contact() {
           <div>
             <h2 className="text-2xl font-bold mb-6 dark:text-white slide-up">Contact Information</h2>
             <div className="grid gap-6 mb-8">
-              {socialLinks.map((link, index) => (
+              {socialLinksWithIcons.map((link, index) => (
                 <a 
                   key={link.url}
                   href={link.url} 
@@ -51,18 +41,18 @@ function Contact() {
                   <span className="text-xl text-primary dark:text-blue-400">
                     {link.icon}
                   </span>
-                  <span className="text-lg dark:text-white">{link.text}</span>
+                  <span className="text-lg dark:text-white">{link.name}</span>
                 </a>
               ))}
             </div>
             <div className="card p-6 space-y-4 slide-up" style={{ animationDelay: '400ms' }}>
               <div className="flex items-center gap-3">
                 <FaPhone className="text-xl text-primary dark:text-blue-400" />
-                <p className="text-lg dark:text-white">+60135932043</p>
+                <p className="text-lg dark:text-white">{resumeData.personalInfo.phone}</p>
               </div>
               <div className="flex items-center gap-3">
                 <FaMapMarkerAlt className="text-xl text-primary dark:text-blue-400" />
-                <p className="text-lg dark:text-white">Semenyih, Malaysia</p>
+                <p className="text-lg dark:text-white">{resumeData.personalInfo.location}</p>
               </div>
             </div>
           </div>

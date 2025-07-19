@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import SkillsChart from '../components/SkillsChart';
+import { resumeData } from '../data/resumeData';
 
 function Home() {
   // Sample testimonials data
@@ -28,8 +29,8 @@ function Home() {
     // }
   ];
 
-  // Sample skills data with more detailed information
-  const skills = [
+  // Skills data with proficiency levels for the chart
+  const skillsWithLevels = [
     { name: "React", level: 90, category: "Frontend" },
     { name: "TypeScript", level: 85, category: "Frontend" },
     { name: "TailwindCSS", level: 95, category: "Frontend" },
@@ -46,10 +47,10 @@ function Home() {
   return (
     <div className="min-h-screen pt-20 dark:bg-gray-900">
       <section className="min-h-[80vh] flex flex-col justify-center items-center text-center px-4 fade-in">
-        <h1 className="text-5xl font-bold mb-4 dark:text-white">Abdul Muhaimin</h1>
-        <h2 className="text-2xl text-secondary dark:text-gray-300 mb-6">Full Stack Developer</h2>
+        <h1 className="text-5xl font-bold mb-4 dark:text-white">{resumeData.personalInfo.name}</h1>
+        <h2 className="text-2xl text-secondary dark:text-gray-300 mb-6">{resumeData.personalInfo.title}</h2>
         <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-400 mb-8">
-          Dynamic Full Stack Developer with 4 years of comprehensive experience in web application development, excelling in creating responsive user interfaces and integrating complex APIs.
+          {resumeData.summary}
         </p>
         <div className="flex gap-4">
           <Link to="/portfolio" className="btn primary">View My Work</Link>
@@ -59,7 +60,7 @@ function Home() {
       
       <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800">
         <h2 className="section-title text-center mx-auto mb-12">Technical Skills</h2>
-        <SkillsChart skills={skills} />
+        <SkillsChart skills={skillsWithLevels} />
       </section>
 
       {/* <section className="py-16 px-4">

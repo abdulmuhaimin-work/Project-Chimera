@@ -18,4 +18,5 @@ export const API_URL = getApiUrl();
 export const API_ENDPOINTS = {
   posts: `${API_URL}/api/posts`,
   projects: `${API_URL}/api/projects`,
+  workExperiences: `${API_URL}/api/work-experiences`,
 }; 

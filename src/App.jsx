@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import About3D from './pages/About3D';
+import AboutWrapper from './pages/AboutWrapper';
 import Portfolio from './pages/Portfolio';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
@@ -9,6 +9,7 @@ import CustomCursor from './components/CustomCursor';
 import ParticleBackground from './components/ParticleBackground';
 import ScrollProgress from './components/ScrollProgress';
 import FloatingContactButton from './components/FloatingContactButton';
+import FloatingResumeButton from './components/FloatingResumeButton';
 import PageTransition from './components/PageTransition';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <ScrollProgress />
         <Navbar />
         <FloatingContactButton />
+        <FloatingResumeButton />
         
         {/* Main content with page transitions */}
         <main>
@@ -32,7 +34,7 @@ function App() {
             } />
             <Route path="/about" element={
               <PageTransition>
-                <About3D />
+                <AboutWrapper />
               </PageTransition>
             } />
             <Route path="/portfolio" element={

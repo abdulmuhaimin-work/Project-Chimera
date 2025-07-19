@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import ThemeToggle from './ThemeToggle';
+import ResumeDownload from './ResumeDownload';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +50,7 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
+            <ResumeDownload />
             <ThemeToggle />
           </div>
         </div>
@@ -97,7 +99,8 @@ function Navbar() {
             Contact
           </Link>
         </div>
-        <div className="px-5 pb-3">
+        <div className="px-5 pb-3 space-y-3">
+          <ResumeDownload />
           <ThemeToggle />
         </div>
       </div>

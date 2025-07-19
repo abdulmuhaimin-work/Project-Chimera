@@ -3,6 +3,7 @@ import { OrbitControls, PerspectiveCamera, Environment, Text, useGLTF } from '@r
 import { Suspense, useState, useEffect, useMemo } from 'react';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { resumeData, fetchWorkExperiencesData } from '../data/resumeData';
 
 function Character({ position, rotation }) {
   const { scene } = useGLTF('/models/character.glb');
@@ -166,41 +167,29 @@ function About3D() {
   const [activeHouse, setActiveHouse] = useState(null);
   const [characterPosition, setCharacterPosition] = useState([0, -3, 0]);
   const [characterRotation, setCharacterRotation] = useState([0, 0, 0]);
+  const [workExperiences, setWorkExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const experiences = [
-    {
-      period: "August 2024 – Present",
-      title: "Consultant, Full Stack Developer",
-      company: "Bestinet Sdn Bhd, Kuala Lumpur",
-      description: "Developed and maintained web applications using NextJS, Typescript and TailwindCSS. Implemented integration with microservices API. Planned and implemented new features and improvements. Automated build, test and deployment of pipelines using Gitlab and Jenkins.",
-      technologies: ["NextJS", "TypeScript", "TailwindCSS", "GitLab", "Jenkins"],
-      position: [15, 0, -5]  // Adjusted position
-    },
-    {
-      period: "August 2023 – August 2024",
-      title: "Mid-level Developer",
-      company: "Nematix Sdn Bhd, Seri Kembangan",
-      description: "Built responsive web applications using Typescript and React. Collaborated with designers to implement user-friendly interfaces. Developed Interactive Data Visualization dashboards using React Charts and CubeJS. Implemented GIS related features using Google Maps API and Kinetica.",
-      technologies: ["React", "TypeScript", "CubeJS", "Google Maps API", "Kinetica", "Supertokens", "Supabase"],
-      position: [5, 0, -5]  // Adjusted position
-    },
-    {
-      period: "September 2021 – August 2023",
-      title: "Front End Developer",
-      company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
-      description: "Developed and maintained web applications using ReactJS and Bootstrap. Implemented authentication and authorization using Firebase Auth. Developed and maintained RESTful APIs using Firebase Cloud Functions. Developed backend services using NodeJS and Express.",
-      technologies: ["React", "Bootstrap", "Firebase", "NodeJS", "Express", "Stripe", "MongoDB"],
-      position: [-5, 0, -5]  // Adjusted position
-    },
-    {
-      period: "February 2020 – April 2020",
-      title: "Software Developer",
-      company: "Elm Lab Sdn Bhd, Beranang",
-      description: "Heavily involved in the development of the landing page to onboard new users of the system. Developed the front end interface and integrated with RESTful API. Ensured deliverables and tasks were completed on time for project delivery date.",
-      technologies: ["HTML", "CSS", "JavaScript", "RESTful API"],
-      position: [-15, 0, -5]  // Adjusted position
-    }
-  ];
+  useEffect(() => {
+    const loadWorkExperiences = async () => {
+      try {
+        const experiences = await fetchWorkExperiencesData();
+        setWorkExperiences(experiences);
+      } catch (err) {
+        console.error('Error loading work experiences:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadWorkExperiences();
+  }, []);
+
+  // Add 3D positions to the fetched work experiences
+  const experiences = workExperiences.map((exp, index) => ({
+    ...exp,
+    position: [15 - (index * 10), 0, -5]  // Distributed positions
+  }));
 
   const moveCharacter = (targetPosition) => {
     // Calculate ground elevation at target position
@@ -243,10 +232,37 @@ function About3D() {
     }, 16);
   };
 
+  if (loading) {
+    return (
+      <div className="relative w-full h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary dark:border-blue-400 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading 3D work experience...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative w-full h-screen">
       <ExperienceInfo experience={activeHouse} />
-      <Canvas>
+      <Canvas
+        onCreated={({ gl }) => {
+          console.log('WebGL context created successfully');
+        }}
+        onError={(error) => {
+          console.error('Canvas error:', error);
+          // This error will be caught by the ErrorBoundary in AboutWrapper
+          throw new Error('Failed to create 3D scene');
+        }}
+        fallback={
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center text-white">
+              <p>Loading 3D environment...</p>
+            </div>
+          </div>
+        }
+      >
         <PerspectiveCamera makeDefault position={[30, 10, 10]} />
         <ambientLight intensity={1} />
         <directionalLight position={[10, 20, 10]} intensity={1} />

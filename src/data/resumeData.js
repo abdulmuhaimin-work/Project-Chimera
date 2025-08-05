@@ -14,13 +14,26 @@ export const resumeData = {
     website: "https://abdulmuhaimin.my/"
   },
   
-  summary: "Dynamic Full Stack Developer with 4 years of comprehensive experience in web application development, excelling in creating responsive user interfaces and integrating complex APIs, ensuring seamless functionality and enhanced user experience.",
+  summary: "With over 4 years of hands-on experience in  building modern, user-centric web applications, I specialize in  full-stack development with a strong focus on frontend technologies such  as React, Next.js, and Drupal. At Credence and in previous roles, I  have excelled in agile environments—delivering scalable solutions and  intuitive user experiences for clients ranging from startups to  established tech firms. I'm passionate about remote-first work cultures and believe in leveraging technology to connect, collaborate,  and innovate from anywhere in the world. Let's connect if you’re looking for a developer who’s committed to quality, efficiency, and continuous  learning.",
   
   education: {
     degree: "Bachelors Degree in Mechanical Engineering",
     institution: "Universiti Teknologi Petronas, Perak, Malaysia",
     period: "January 2009 – January 2014"
   },
+
+  certificates: [
+    {
+      name: "Full Stack Web Development Bootcamp",
+      issuer: "Malaysian Global Innovation & Creativity Centre (MaGIC)",
+      url: null
+    },
+    {
+      name: "Functional Programming in Erlang",
+      issuer: "University of Kent",
+      url: "https://www.futurelearn.com/certificates/h65gvs1"
+    }
+  ],
   
   skills: {
     frontend: ["React", "TypeScript", "NextJS", "TailwindCSS", "JavaScript", "HTML5/CSS3"],
@@ -31,6 +44,27 @@ export const resumeData = {
   languages: [
     { name: "Bahasa Melayu", level: "Native" },
     { name: "English", level: "Proficient" }
+  ],
+
+  references: [
+    {
+      name: "Nasrul Muhaimin Mohd Zain",
+      title: "Head of Software Engineering, Nematix",
+      email: "nasminzain@gmail.com",
+      phone: null
+    },
+    {
+      name: "Syarizatul Nadia binti Rosdi", 
+      title: "Product Manager, PinC Technology Sdn Bhd",
+      email: "nadiarosdie@gmail.com",
+      phone: "+60133935959"
+    },
+    {
+      name: "Mohd Syafiq Zainuddin",
+      title: "QA Tester, REKA INISIATIF SDN. BHD",
+      email: "zainshafiq594@gmail.com",
+      phone: "+60129065572"
+    }
   ],
   
   // Additional data for website components

@@ -49,280 +49,353 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
         }
         
         body {
-          font-family: 'Arial', sans-serif;
+          font-family: 'Calibri', 'Arial', sans-serif;
           line-height: 1.6;
-          color: #333;
+          color: #2c3e50;
           background: white;
-          padding: 20px;
-          font-size: 12px;
+          padding: 0.75in;
+          font-size: 11pt;
+          max-width: 8.5in;
+          margin: 0 auto;
         }
         
         .resume-container {
-          max-width: 800px;
-          margin: 0 auto;
           background: white;
-          box-shadow: 0 0 20px rgba(0,0,0,0.1);
-          overflow: hidden;
         }
         
         .header {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          padding: 30px;
           text-align: center;
+          margin-bottom: 25pt;
+          padding-bottom: 15pt;
+          border-bottom: 2pt solid #34495e;
         }
         
         .header h1 {
-          font-size: 2.5em;
-          margin-bottom: 10px;
-          font-weight: 300;
+          font-size: 22pt;
+          font-weight: bold;
+          margin-bottom: 8pt;
+          color: #2c3e50;
+          letter-spacing: 1pt;
         }
         
         .header h2 {
-          font-size: 1.3em;
-          margin-bottom: 20px;
-          opacity: 0.9;
+          font-size: 14pt;
+          margin-bottom: 15pt;
+          font-weight: normal;
+          color: #34495e;
         }
         
         .contact-info {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 20px;
-          margin-top: 20px;
+          font-size: 10.5pt;
+          text-align: center;
+          line-height: 1.4;
         }
         
-        .contact-info span {
-          font-size: 0.9em;
-          opacity: 0.9;
-        }
-        
-        .content {
-          padding: 40px;
+        .contact-info div {
+          margin-bottom: 3pt;
         }
         
         .section {
-          margin-bottom: 40px;
+          margin-bottom: 25pt;
         }
         
         .section h3 {
-          color: #667eea;
-          font-size: 1.3em;
-          margin-bottom: 15px;
-          padding-bottom: 8px;
-          border-bottom: 2px solid #667eea;
+          font-size: 13pt;
+          font-weight: bold;
+          margin-bottom: 12pt;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          color: #2c3e50;
+          border-bottom: 1.5pt solid #bdc3c7;
+          padding-bottom: 4pt;
+          letter-spacing: 0.5pt;
         }
         
         .summary {
-          font-size: 1.1em;
-          line-height: 1.8;
-          color: #555;
+          font-size: 11pt;
+          line-height: 1.6;
           text-align: justify;
+          margin-bottom: 0;
+          padding: 10pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #3498db;
         }
         
         .job, .project-item {
-          margin-bottom: 25px;
-          padding: 20px;
-          background: #f8f9fa;
-          border-radius: 8px;
-          border-left: 4px solid #667eea;
+          margin-bottom: 18pt;
+          padding-bottom: 15pt;
+          border-bottom: 1pt solid #ecf0f1;
+        }
+        
+        .job:last-child, .project-item:last-child {
+          border-bottom: none;
         }
         
         .job-header, .project-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 10px;
-          flex-wrap: wrap;
+          margin-bottom: 8pt;
         }
         
         .job-title, .project-title {
-          font-size: 1.2em;
+          font-size: 12pt;
           font-weight: bold;
-          color: #333;
-          margin-bottom: 5px;
+          display: inline;
+          color: #2c3e50;
         }
         
         .job-company, .project-role {
-          font-size: 1em;
-          color: #667eea;
-          margin-bottom: 5px;
+          font-size: 11pt;
+          font-weight: 600;
+          color: #34495e;
+          margin-left: 5pt;
         }
         
         .job-period, .project-timeline {
-          font-size: 0.9em;
-          color: #666;
+          font-size: 10pt;
           font-style: italic;
+          float: right;
+          color: #7f8c8d;
+          background-color: #f8f9fa;
+          padding: 2pt 6pt;
+          border-radius: 3pt;
         }
         
         .job-description, .project-description {
-          margin-bottom: 15px;
-          color: #555;
+          margin: 8pt 0;
+          font-size: 11pt;
+          line-height: 1.5;
           text-align: justify;
         }
         
-        .technologies, .project-technologies {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
+        .job-description ul, .project-description ul {
+          margin: 8pt 0 8pt 25pt;
+          padding: 0;
         }
         
-        .tech-tag {
-          background: #667eea;
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 0.8em;
+        .job-description li, .project-description li {
+          margin-bottom: 4pt;
+          line-height: 1.5;
+        }
+        
+        .technologies, .project-technologies {
+          font-size: 10pt;
+          margin-top: 8pt;
+          padding: 6pt 10pt;
+          background-color: #f8f9fa;
+          border-radius: 4pt;
+          border-left: 3pt solid #95a5a6;
+        }
+        
+        .technologies::before, .project-technologies::before {
+          content: "Technologies: ";
+          font-weight: bold;
+          color: #34495e;
         }
         
         .project-links {
-          margin-top: 10px;
-          font-size: 0.9em;
+          font-size: 10pt;
+          margin-top: 8pt;
+          padding: 5pt 0;
+          border-top: 1pt dotted #bdc3c7;
         }
         
         .project-links a {
-          color: #667eea;
-          text-decoration: none;
-          margin-right: 15px;
-        }
-        
-        .project-featured {
-          position: relative;
-        }
-        
-        .project-featured::before {
-          content: "★";
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          color: #ffd700;
-          font-size: 1.2em;
+          color: #2980b9;
+          text-decoration: underline;
+          margin-right: 10pt;
         }
         
         .education-item {
-          background: #f8f9fa;
-          padding: 20px;
-          border-radius: 8px;
-          border-left: 4px solid #667eea;
+          padding: 12pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #e74c3c;
+          border-radius: 4pt;
         }
         
         .education-degree {
-          font-size: 1.2em;
+          font-size: 12pt;
           font-weight: bold;
-          color: #333;
-          margin-bottom: 5px;
+          display: inline;
+          color: #2c3e50;
         }
         
         .education-institution {
-          color: #667eea;
-          margin-bottom: 5px;
+          font-size: 11pt;
+          color: #34495e;
+          margin-top: 3pt;
         }
         
         .education-period {
-          color: #666;
+          font-size: 10pt;
           font-style: italic;
+          float: right;
+          color: #7f8c8d;
+          background-color: white;
+          padding: 2pt 6pt;
+          border-radius: 3pt;
+        }
+
+        .certificates-container {
+          display: block;
         }
         
-        .skills-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 20px;
+        .certificate-item {
+          margin-bottom: 12pt;
+          padding: 12pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #16a085;
+          border-radius: 4pt;
+        }
+        
+        .certificate-item:last-child {
+          margin-bottom: 0;
+        }
+        
+        .certificate-name {
+          font-size: 11pt;
+          font-weight: bold;
+          color: #2c3e50;
+          margin-bottom: 4pt;
+        }
+        
+        .certificate-issuer {
+          font-size: 10.5pt;
+          color: #34495e;
+          margin-bottom: 4pt;
+        }
+        
+        .certificate-url {
+          font-size: 10pt;
+          color: #2980b9;
+        }
+        
+        .certificate-url a {
+          color: #2980b9;
+          text-decoration: underline;
+        }
+        
+        .skills-container {
+          display: block;
         }
         
         .skill-category {
-          background: #f8f9fa;
-          padding: 20px;
-          border-radius: 8px;
-          border-left: 4px solid #667eea;
+          margin-bottom: 12pt;
+          padding: 10pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #27ae60;
+          border-radius: 4pt;
         }
         
         .skill-category h4 {
-          color: #333;
-          margin-bottom: 10px;
-          font-size: 1.1em;
+          font-size: 11pt;
+          font-weight: bold;
+          margin-bottom: 6pt;
+          color: #2c3e50;
+          display: block;
         }
         
         .skill-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
+          font-size: 11pt;
+          line-height: 1.5;
         }
         
-        .skill-item {
-          background: white;
-          color: #667eea;
-          padding: 6px 12px;
-          border-radius: 4px;
-          font-size: 0.9em;
-          border: 1px solid #e0e0e0;
-        }
-        
-        .languages-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 15px;
+        .languages-container {
+          font-size: 11pt;
+          line-height: 1.6;
+          padding: 10pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #f39c12;
+          border-radius: 4pt;
         }
         
         .language-item {
-          background: #f8f9fa;
-          padding: 15px;
-          border-radius: 8px;
-          text-align: center;
-          border-left: 4px solid #667eea;
+          display: inline-block;
+          margin-right: 15pt;
+          margin-bottom: 5pt;
         }
         
         .language-name {
           font-weight: bold;
-          color: #333;
-          margin-bottom: 5px;
+          color: #2c3e50;
         }
         
         .language-level {
-          color: #667eea;
           font-style: italic;
+          color: #7f8c8d;
+        }
+        
+        .references-container {
+          display: block;
+        }
+        
+        .reference-item {
+          margin-bottom: 10pt;
+          padding: 8pt 15pt;
+          background-color: #f8f9fa;
+          border-left: 3pt solid #9b59b6;
+          border-radius: 4pt;
+        }
+        
+        .reference-item:last-child {
+          margin-bottom: 0;
+        }
+        
+        .reference-name {
+          font-size: 12pt;
+          font-weight: bold;
+          color: #2c3e50;
+          margin-bottom: 4pt;
+        }
+        
+        .reference-title {
+          font-size: 10.5pt;
+          color: #34495e;
+          margin-bottom: 4pt;
+          font-style: italic;
+        }
+        
+        .reference-contact {
+          font-size: 10pt;
+          color: #7f8c8d;
+        }
+        
+        /* Clear floats */
+        .clearfix::after {
+          content: "";
+          display: table;
+          clear: both;
         }
         
         @media print {
           body {
-            padding: 0;
-            font-size: 11px;
-          }
-          
-          .resume-container {
-            box-shadow: none;
-            margin: 0;
-            max-width: none;
+            padding: 0.5in;
+            font-size: 10.5pt;
           }
           
           .header {
-            padding: 20px;
-          }
-          
-          .content {
-            padding: 20px;
+            margin-bottom: 20pt;
+            padding-bottom: 12pt;
           }
           
           .section {
-            margin-bottom: 25px;
+            page-break-inside: avoid;
+            margin-bottom: 20pt;
           }
           
           .job, .project-item {
-            margin-bottom: 20px;
-            padding: 15px;
+            page-break-inside: avoid;
+            margin-bottom: 15pt;
+            padding-bottom: 12pt;
           }
           
-          .skill-category {
-            padding: 15px;
+          .summary, .skill-category, .languages-container, .education-item, .certificate-item, .reference-item {
+            background-color: #f8f9fa !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
           
-          .education-item {
-            padding: 15px;
-          }
-          
-          .project-links a {
-            color: #333 !important;
+          .job-period, .project-timeline, .education-period {
+            background-color: #f0f0f0 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
         }
       </style>
@@ -333,12 +406,12 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           <h1>${resumeData.personalInfo.name}</h1>
           <h2>${resumeData.personalInfo.title}</h2>
           <div class="contact-info">
-            <span>📍 ${resumeData.personalInfo.location}</span>
-            <span>📞 ${resumeData.personalInfo.phone}</span>
-            <span>📧 ${resumeData.personalInfo.email}</span>
-            <span>🌐 ${resumeData.personalInfo.website}</span>
-            <span>💼 LinkedIn: ${resumeData.personalInfo.linkedin}</span>
-            <span>💻 GitHub: ${resumeData.personalInfo.github}</span>
+            <div>${resumeData.personalInfo.location}</div>
+            <div>Phone: ${resumeData.personalInfo.phone}</div>
+            <div>Email: ${resumeData.personalInfo.email}</div>
+            <div>Website: ${resumeData.personalInfo.website}</div>
+            <div>LinkedIn: ${resumeData.personalInfo.linkedin}</div>
+            <div>GitHub: ${resumeData.personalInfo.github}</div>
           </div>
         </div>
         
@@ -349,20 +422,17 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           </div>
           
           <div class="section">
-            <h3>Work Experience</h3>
+            <h3>Professional Experience</h3>
             ${workExperiences.map(job => `
               <div class="job">
-                <div class="job-header">
-                  <div>
-                    <div class="job-title">${job.title}</div>
-                    <div class="job-company">${job.company}</div>
-                  </div>
-                  <div class="job-period">${job.period}</div>
+                <div class="job-header clearfix">
+                  <span class="job-title">${job.title}</span>, <span class="job-company">${job.company}</span>
+                  <span class="job-period">${job.period}</span>
                 </div>
                 <div class="job-description">${job.description}</div>
-                <div class="technologies">
-                  ${job.technologies && job.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('') || ''}
-                </div>
+                ${job.technologies && job.technologies.length > 0 ? `
+                <div class="technologies">${job.technologies.join(', ')}</div>
+                ` : ''}
               </div>
             `).join('')}
           </div>
@@ -371,23 +441,23 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           <div class="section">
             <h3>Key Projects</h3>
             ${projects.map(project => `
-              <div class="project-item ${project.featured ? 'project-featured' : ''}">
-                <div class="project-header">
-                  <div>
-                    <div class="project-title">${project.title}</div>
-                    <div class="project-role">${project.role || 'Developer'} ${project.client ? '• ' + project.client : ''}</div>
-                  </div>
-                  <div class="project-timeline">${project.timeline || ''}</div>
+              <div class="project-item">
+                <div class="project-header clearfix">
+                  <span class="project-title">${project.title}</span>
+                  ${project.role ? ` - <span class="project-role">${project.role}</span>` : ''}
+                  ${project.client ? ` (${project.client})` : ''}
+                  ${project.timeline ? `<span class="project-timeline">${project.timeline}</span>` : ''}
                 </div>
                 <div class="project-description">${project.description}</div>
                 ${project.outcome ? `<div class="project-description"><strong>Outcome:</strong> ${project.outcome}</div>` : ''}
-                <div class="project-technologies">
-                  ${project.tech_stack && project.tech_stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('') || ''}
-                </div>
+                ${project.tech_stack && project.tech_stack.length > 0 ? `
+                <div class="project-technologies">${project.tech_stack.join(', ')}</div>
+                ` : ''}
                 ${(project.repo_url || project.live_url) ? `
                 <div class="project-links">
-                  ${project.live_url ? `<a href="${project.live_url}">🌐 Live Demo</a>` : ''}
-                  ${project.repo_url ? `<a href="${project.repo_url}">💻 Source Code</a>` : ''}
+                  ${project.live_url ? `Live Demo: ${project.live_url}` : ''}
+                  ${project.live_url && project.repo_url ? ' | ' : ''}
+                  ${project.repo_url ? `Source Code: ${project.repo_url}` : ''}
                 </div>
                 ` : ''}
               </div>
@@ -397,44 +467,68 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           
           <div class="section">
             <h3>Education</h3>
-            <div class="education-item">
-              <div class="education-degree">${resumeData.education.degree}</div>
+            <div class="education-item clearfix">
+              <span class="education-degree">${resumeData.education.degree}</span>
+              <span class="education-period">${resumeData.education.period}</span>
               <div class="education-institution">${resumeData.education.institution}</div>
-              <div class="education-period">${resumeData.education.period}</div>
+            </div>
+          </div>
+          
+          <div class="section">
+            <h3>Certificates</h3>
+            <div class="certificates-container">
+              ${resumeData.certificates.map(certificate => `
+                <div class="certificate-item">
+                  <div class="certificate-name">${certificate.name}</div>
+                  <div class="certificate-issuer">${certificate.issuer}</div>
+                  ${certificate.url ? `<div class="certificate-url"><a href="${certificate.url}">View Certificate</a></div>` : ''}
+                </div>
+              `).join('')}
             </div>
           </div>
           
           <div class="section">
             <h3>Technical Skills</h3>
-            <div class="skills-grid">
+            <div class="skills-container">
               <div class="skill-category">
-                <h4>Frontend Development</h4>
-                <div class="skill-list">
-                  ${resumeData.skills.frontend.map(skill => `<span class="skill-item">${skill}</span>`).join('')}
-                </div>
+                <h4>Frontend Development:</h4>
+                <span class="skill-list">${resumeData.skills.frontend.join(', ')}</span>
               </div>
               <div class="skill-category">
-                <h4>Backend Development</h4>
-                <div class="skill-list">
-                  ${resumeData.skills.backend.map(skill => `<span class="skill-item">${skill}</span>`).join('')}
-                </div>
+                <h4>Backend Development:</h4>
+                <span class="skill-list">${resumeData.skills.backend.join(', ')}</span>
               </div>
               <div class="skill-category">
-                <h4>Tools & Technologies</h4>
-                <div class="skill-list">
-                  ${resumeData.skills.tools.map(skill => `<span class="skill-item">${skill}</span>`).join('')}
-                </div>
+                <h4>Tools & Technologies:</h4>
+                <span class="skill-list">${resumeData.skills.tools.join(', ')}</span>
               </div>
             </div>
           </div>
           
           <div class="section">
             <h3>Languages</h3>
-            <div class="languages-grid">
+            <div class="languages-container">
               ${resumeData.languages.map(language => `
-                <div class="language-item">
-                  <div class="language-name">${language.name}</div>
-                  <div class="language-level">${language.level}</div>
+                <span class="language-item">
+                  <span class="language-name">${language.name}</span> 
+                  (<span class="language-level">${language.level}</span>)
+                </span>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="section">
+            <h3>References</h3>
+            <div class="references-container">
+              ${resumeData.references.map(reference => `
+                <div class="reference-item">
+                  <div class="reference-name">${reference.name}</div>
+                  <div class="reference-title">${reference.title}</div>
+                  <div class="reference-contact">
+                    ${reference.phone ? `Phone: ${reference.phone}` : ''}
+                    ${reference.phone && reference.email ? ' | ' : ''}
+                    ${reference.email ? `Email: ${reference.email}` : ''}
+                  </div>
                 </div>
               `).join('')}
             </div>

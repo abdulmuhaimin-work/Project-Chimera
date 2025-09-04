@@ -60,7 +60,7 @@ export const resumeData = {
       phone: "+60133935959"
     },
     {
-      name: "Mohd Syafiq Zainuddin",
+      name: "Ishraf Shafiq Zainuddin",
       title: "QA Tester, REKA INISIATIF SDN. BHD",
       email: "zainshafiq594@gmail.com",
       phone: "+60129065572"

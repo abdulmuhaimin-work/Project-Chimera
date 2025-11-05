@@ -5,34 +5,40 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github.css'; // You can change this to other themes
-import { API_ENDPOINTS } from '../config/api';
+import { fetchPosts } from '../services/api';
 
 function Blog() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryStatus, setRetryStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [expandedPost, setExpandedPost] = useState(null);
 
-  // Fetch posts from Phoenix API
+  // Fetch posts from API with retry logic
   useEffect(() => {
-    const fetchPosts = async () => {
+    const loadPosts = async () => {
       try {
-        const response = await fetch(API_ENDPOINTS.posts);
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const data = await response.json();
-        setPosts(data.data || []);
+        // Pass retry callback to show status to user
+        const postsData = await fetchPosts((attempt, maxRetries) => {
+          if (attempt === 1) {
+            setRetryStatus('Server is waking up, please wait...');
+          } else {
+            setRetryStatus(`Retrying... (Attempt ${attempt} of ${maxRetries})`);
+          }
+        });
+        setPosts(postsData);
+        setRetryStatus('');
       } catch (err) {
         setError(err.message);
+        setRetryStatus('');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
+    loadPosts();
   }, []);
 
   // Get all unique tags from posts
@@ -74,7 +80,14 @@ function Blog() {
       <div className="min-h-screen pt-20 px-4 bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <FaSpinner className="animate-spin text-4xl text-primary mb-4 mx-auto" />
-          <p className="text-gray-600 dark:text-gray-400">Loading blog posts...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            {retryStatus || 'Loading blog posts...'}
+          </p>
+          {retryStatus && (
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-500 max-w-md mx-auto">
+              The server may be sleeping and needs time to wake up. This should only take a moment.
+            </p>
+          )}
         </div>
       </div>
     );
@@ -88,7 +101,7 @@ function Blog() {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Oops! Something went wrong</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">Error: {error}</p>
           <p className="text-sm text-gray-500 dark:text-gray-500">
-            Make sure the backend server is running and accessible
+            The server may be unavailable. Please try refreshing the page in a moment.
           </p>
         </div>
       </div>

@@ -1,12 +1,18 @@
 import { API_ENDPOINTS } from '../config/api';
+import { fetchJsonWithRetry } from '../utils/fetchWithRetry';
 
-export const fetchWorkExperiences = async () => {
+/**
+ * Fetch work experiences with automatic retry on failure
+ * @param {Function} onRetry - Optional callback for retry notifications
+ */
+export const fetchWorkExperiences = async (onRetry = null) => {
   try {
-    const response = await fetch(API_ENDPOINTS.workExperiences);
-    if (!response.ok) {
-      throw new Error('Failed to fetch work experiences');
-    }
-    const data = await response.json();
+    const data = await fetchJsonWithRetry(
+      API_ENDPOINTS.workExperiences,
+      {},
+      {}, // Use default retry options
+      onRetry
+    );
     return data.data || [];
   } catch (error) {
     console.error('Error fetching work experiences:', error);
@@ -14,13 +20,18 @@ export const fetchWorkExperiences = async () => {
   }
 };
 
-export const fetchProjects = async () => {
+/**
+ * Fetch projects with automatic retry on failure
+ * @param {Function} onRetry - Optional callback for retry notifications
+ */
+export const fetchProjects = async (onRetry = null) => {
   try {
-    const response = await fetch(API_ENDPOINTS.projects);
-    if (!response.ok) {
-      throw new Error('Failed to fetch projects');
-    }
-    const data = await response.json();
+    const data = await fetchJsonWithRetry(
+      API_ENDPOINTS.projects,
+      {},
+      {}, // Use default retry options
+      onRetry
+    );
     return data.data || [];
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -28,13 +39,18 @@ export const fetchProjects = async () => {
   }
 };
 
-export const fetchPosts = async () => {
+/**
+ * Fetch blog posts with automatic retry on failure
+ * @param {Function} onRetry - Optional callback for retry notifications
+ */
+export const fetchPosts = async (onRetry = null) => {
   try {
-    const response = await fetch(API_ENDPOINTS.posts);
-    if (!response.ok) {
-      throw new Error('Failed to fetch posts');
-    }
-    const data = await response.json();
+    const data = await fetchJsonWithRetry(
+      API_ENDPOINTS.posts,
+      {},
+      {}, // Use default retry options
+      onRetry
+    );
     return data.data || [];
   } catch (error) {
     console.error('Error fetching posts:', error);

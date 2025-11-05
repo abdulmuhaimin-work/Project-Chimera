@@ -1,16 +1,11 @@
 import { resumeData, fetchWorkExperiencesData } from '../data/resumeData';
-import { API_ENDPOINTS } from '../config/api';
+import { fetchProjects } from '../services/api';
 
-// Function to fetch projects from API
-const fetchProjectsData = async () => {
+// Function to fetch projects from API with retry logic
+const fetchProjectsData = async (onRetry = null) => {
   try {
-    const response = await fetch(API_ENDPOINTS.projects);
-    if (!response.ok) {
-      throw new Error('Failed to fetch projects');
-    }
-    const data = await response.json();
+    const projects = await fetchProjects(onRetry);
     // Return featured projects first, then others, limited to top 4-6 projects
-    const projects = data.data || [];
     return projects
       .sort((a, b) => {
         // Featured projects first, then by sort_order
@@ -25,15 +20,15 @@ const fetchProjectsData = async () => {
   }
 };
 
-export const generateResumeHTML = async (workExperiences = null, projects = null) => {
+export const generateResumeHTML = async (workExperiences = null, projects = null, onRetry = null) => {
   // Fetch work experiences if not provided
   if (!workExperiences) {
-    workExperiences = await fetchWorkExperiencesData();
+    workExperiences = await fetchWorkExperiencesData(onRetry);
   }
   
   // Fetch projects if not provided
   if (!projects) {
-    projects = await fetchProjectsData();
+    projects = await fetchProjectsData(onRetry);
   }
   
   return `
@@ -543,19 +538,53 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
 export const openResumeWindow = async () => {
   const resumeWindow = window.open('', '_blank', 'width=800,height=600');
   
-  // Show loading message
-  resumeWindow.document.write(`
-    <html>
-      <head><title>Generating Resume...</title></head>
-      <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
-        <h2>Generating Resume...</h2>
-        <p>Please wait while we fetch your latest work experience and project data.</p>
-      </body>
-    </html>
-  `);
+  // Function to update loading message in the resume window
+  const updateLoadingMessage = (message, subMessage = '') => {
+    resumeWindow.document.open();
+    resumeWindow.document.write(`
+      <html>
+        <head><title>Generating Resume...</title></head>
+        <body style="font-family: Arial, sans-serif; padding: 40px; text-align: center; background-color: #f5f5f5;">
+          <div style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <div style="display: inline-block; width: 50px; height: 50px; border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <h2 style="color: #333; margin: 20px 0 10px 0;">${message}</h2>
+            ${subMessage ? `<p style="color: #666; font-size: 14px; line-height: 1.6;">${subMessage}</p>` : ''}
+          </div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </body>
+      </html>
+    `);
+    resumeWindow.document.close();
+  };
+  
+  // Show initial loading message
+  updateLoadingMessage(
+    'Generating Resume...',
+    'Please wait while we fetch your latest work experience and project data.'
+  );
   
   try {
-    const resumeHTML = await generateResumeHTML();
+    // Create retry callback to update the window
+    const onRetry = (attempt, maxRetries) => {
+      if (attempt === 1) {
+        updateLoadingMessage(
+          'Server is waking up...',
+          'The backend server is starting up. This may take up to 30 seconds. Please be patient.'
+        );
+      } else {
+        updateLoadingMessage(
+          'Retrying...',
+          `Attempt ${attempt} of ${maxRetries}. The server may need a moment to respond.`
+        );
+      }
+    };
+    
+    const resumeHTML = await generateResumeHTML(null, null, onRetry);
     
     // Replace with actual resume content
     resumeWindow.document.open();
@@ -572,10 +601,22 @@ export const openResumeWindow = async () => {
     resumeWindow.document.write(`
       <html>
         <head><title>Resume Generation Error</title></head>
-        <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
-          <h2>Error Generating Resume</h2>
-          <p>Sorry, there was an error generating your resume. Please try again later.</p>
-          <p>Error: ${error.message}</p>
+        <body style="font-family: Arial, sans-serif; padding: 40px; text-align: center; background-color: #f5f5f5;">
+          <div style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #e74c3c; margin-bottom: 20px;">❌ Error Generating Resume</h2>
+            <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">
+              Sorry, there was an error generating your resume. The server may be temporarily unavailable.
+            </p>
+            <p style="color: #999; font-size: 14px; background: #f9f9f9; padding: 15px; border-radius: 4px; word-wrap: break-word;">
+              Error: ${error.message}
+            </p>
+            <button 
+              onclick="window.location.reload()" 
+              style="margin-top: 20px; padding: 12px 24px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;"
+            >
+              Try Again
+            </button>
+          </div>
         </body>
       </html>
     `);

@@ -10,14 +10,24 @@ function About() {
   const [workExperiences, setWorkExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryStatus, setRetryStatus] = useState('');
 
   useEffect(() => {
     const loadWorkExperiences = async () => {
       try {
-        const experiences = await fetchWorkExperiencesData();
+        // Pass retry callback to show status to user
+        const experiences = await fetchWorkExperiencesData((attempt, maxRetries) => {
+          if (attempt === 1) {
+            setRetryStatus('Server is waking up, please wait...');
+          } else {
+            setRetryStatus(`Retrying... (Attempt ${attempt} of ${maxRetries})`);
+          }
+        });
         setWorkExperiences(experiences);
+        setRetryStatus('');
       } catch (err) {
         setError(err.message);
+        setRetryStatus('');
       } finally {
         setLoading(false);
       }
@@ -63,11 +73,21 @@ function About() {
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary dark:border-blue-400 mx-auto"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading work experiences...</p>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                {retryStatus || 'Loading work experiences...'}
+              </p>
+              {retryStatus && (
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">
+                  The server may be sleeping and needs time to wake up. This should only take a moment.
+                </p>
+              )}
             </div>
           ) : error ? (
             <div className="text-center py-8">
-              <p className="text-red-600 dark:text-red-400">Error loading work experiences: {error}</p>
+              <p className="text-red-600 dark:text-red-400 mb-2">Error loading work experiences: {error}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                The server may be unavailable. Please try refreshing the page in a moment.
+              </p>
             </div>
           ) : (
             <InteractiveTimeline experiences={workExperiences} />

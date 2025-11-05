@@ -93,9 +93,9 @@ export const resumeData = {
 };
 
 // Function to fetch work experiences from API
-export const fetchWorkExperiencesData = async () => {
+export const fetchWorkExperiencesData = async (onRetry = null) => {
   try {
-    const workExperiences = await fetchWorkExperiences();
+    const workExperiences = await fetchWorkExperiences(onRetry);
     return workExperiences;
   } catch (error) {
     console.error('Error fetching work experiences:', error);

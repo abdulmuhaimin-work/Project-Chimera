@@ -5,8 +5,8 @@
 
 const DEFAULT_OPTIONS = {
   maxRetries: 3,
-  initialTimeout: 30000, // 30 seconds for first attempt (allows server wake-up time)
-  retryTimeout: 10000,   // 10 seconds for subsequent attempts
+  initialTimeout: 2000, // 2 seconds for first attempt (allows server wake-up time)
+  retryTimeout: 5000,   // 5 seconds for subsequent attempts
   backoffMultiplier: 1.5,
   retryableStatuses: [408, 429, 500, 502, 503, 504], // HTTP status codes that should trigger a retry
 };
@@ -138,24 +138,90 @@ export const fetchWithRetry = async (
  * @param {Object} fetchOptions - Standard fetch options
  * @param {Object} retryOptions - Retry configuration options
  * @param {Function} onRetry - Callback function called before each retry attempt
+ * @param {Function} validateData - Optional function to validate if data is actually ready
  * @returns {Promise<any>} - Parsed JSON response
  */
 export const fetchJsonWithRetry = async (
   url,
   fetchOptions = {},
   retryOptions = {},
-  onRetry = null
+  onRetry = null,
+  validateData = null
 ) => {
-  const response = await fetchWithRetry(url, fetchOptions, retryOptions, onRetry);
+  const options = { ...DEFAULT_OPTIONS, ...retryOptions };
+  let lastError = null;
   
-  if (!response.ok) {
-    throw new FetchError(
-      `HTTP ${response.status}: ${response.statusText}`,
-      response.status,
-      response
-    );
+  for (let attempt = 0; attempt <= options.maxRetries; attempt++) {
+    try {
+      // Use longer timeout for first attempt to allow server wake-up
+      const timeout = attempt === 0 ? options.initialTimeout : options.retryTimeout;
+      
+      // Notify caller about retry attempt
+      if (onRetry && attempt > 0) {
+        onRetry(attempt, options.maxRetries);
+      }
+      
+      const response = await fetchWithTimeout(url, fetchOptions, timeout);
+      
+      if (!response.ok) {
+        throw new FetchError(
+          `HTTP ${response.status}: ${response.statusText}`,
+          response.status,
+          response
+        );
+      }
+      
+      const data = await response.json();
+      
+      // If validation function is provided, check if data is actually ready
+      // This handles the case where server responds successfully but with empty data
+      // because it's still initializing (e.g., ETS tables seeding)
+      if (validateData && !validateData(data)) {
+        // Data is not ready yet - treat as retriable error
+        throw new FetchError(
+          'Server returned empty data - may still be initializing',
+          503, // Service Unavailable
+          response
+        );
+      }
+      
+      return data;
+      
+    } catch (error) {
+      lastError = error;
+      
+      // Don't retry if we've exhausted all attempts
+      if (attempt >= options.maxRetries) {
+        break;
+      }
+      
+      // Check if error is retryable
+      const isRetryable = 
+        error instanceof FetchError ||
+        error.name === 'TypeError' || // Network errors
+        error.message.includes('fetch') ||
+        error.message.includes('network');
+      
+      if (!isRetryable) {
+        throw error;
+      }
+      
+      // Calculate backoff delay (exponential backoff)
+      const baseDelay = 1000; // 1 second base
+      const delay = baseDelay * Math.pow(options.backoffMultiplier, attempt);
+      
+      console.log(
+        `Fetch attempt ${attempt + 1} failed. Retrying in ${delay}ms...`,
+        error.message
+      );
+      
+      // Wait before retrying
+      await sleep(delay);
+    }
   }
   
-  return await response.json();
+  // All retries exhausted
+  console.error(`All ${options.maxRetries + 1} fetch attempts failed for ${url}`);
+  throw lastError || new Error('Request failed after multiple retries');
 };
 

@@ -1,6 +1,13 @@
 import { API_ENDPOINTS } from '../config/api';
 import { fetchJsonWithRetry } from '../utils/fetchWithRetry';
 
+/** Fly.io free tier can take 15–30s to cold-start; default 2s first timeout caused abort + retries. */
+export const coldStartRetryOptions = {
+  initialTimeout: 28_000,
+  retryTimeout: 12_000,
+  maxRetries: 2,
+};
+
 /**
  * Validates that work experiences response contains actual data
  * This handles the case where the backend server is still initializing
@@ -55,12 +62,12 @@ export const fetchWorkExperiences = async (onRetry = null) => {
  * Includes validation to detect when server is still initializing
  * @param {Function} onRetry - Optional callback for retry notifications
  */
-export const fetchProjects = async (onRetry = null) => {
+export const fetchProjects = async (onRetry = null, retryOptions = coldStartRetryOptions) => {
   try {
     const data = await fetchJsonWithRetry(
       API_ENDPOINTS.projects,
       {},
-      {}, // Use default retry options
+      retryOptions,
       onRetry,
       validateProjects // Validate that data is actually loaded
     );

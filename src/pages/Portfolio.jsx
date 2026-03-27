@@ -9,65 +9,107 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { fetchProjects } from '../services/api';
+import projectsSnapshot from '../data/projectsSnapshot.json';
 
 // Create a responsive grid layout with width provider
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+const snapshotList =
+  Array.isArray(projectsSnapshot?.data) && projectsSnapshot.data.length > 0
+    ? projectsSnapshot.data
+    : null;
+
+function getIcon(tech) {
+  const iconMap = {
+    'React': <FaReact />,
+    'ReactJS': <FaReact />,
+    'TailwindCSS': <SiTailwindcss />,
+    'Tailwind': <SiTailwindcss />,
+    'TypeScript': <SiTypescript />,
+    'JavaScript': <SiJavascript />,
+    'Node.js': <FaNodeJs />,
+    'NodeJS': <FaNodeJs />,
+    'Express': <SiExpress />,
+    'ExpressJS': <SiExpress />,
+    'MongoDB': <SiMongodb />,
+    'Firebase': <FaFire />,
+    'Bootstrap': <FaBootstrap />,
+    'HTML': <SiHtml5 />,
+    'CSS': <SiCss3 />,
+    'Vite': <SiVite />,
+    'Unity': <BiCodeAlt />,
+    'C#': <BiCodeAlt />
+  };
+  return iconMap[tech] || <BiCodeAlt />;
+}
+
+function transformProjectsData(backendProjects) {
+  return backendProjects.map(project => ({
+    ...project,
+    repoUrl: project.repo_url,
+    liveUrl: project.live_url,
+    techStack: project.tech_stack || [],
+    technologies: (project.tech_stack || []).map(tech => ({
+      name: tech,
+      icon: getIcon(tech)
+    })),
+    features: [],
+    screenshots: [],
+    challenges: [],
+    approach: [],
+    results: []
+  }));
+}
+
 function Portfolio() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(() =>
+    snapshotList ? transformProjectsData(snapshotList) : []
+  );
+  const [loading, setLoading] = useState(() => !snapshotList);
+  const [isRefreshing, setIsRefreshing] = useState(() => !!snapshotList);
   const [error, setError] = useState(null);
   const [retryStatus, setRetryStatus] = useState('');
   const [selectedProject, setSelectedProject] = useState(null);
   const [layouts, setLayouts] = useState(null);
 
-  // Fetch projects from backend API with retry logic
+  // Stale-while-revalidate: snapshot paints immediately; API replaces when ready
   useEffect(() => {
+    let cancelled = false;
+
     const loadProjects = async () => {
       try {
-        // Pass retry callback to show status to user
         const projectsData = await fetchProjects((attempt, maxRetries) => {
           if (attempt === 1) {
-            setRetryStatus('Server is waking up, please wait...');
+            setRetryStatus('Server is waking up, refreshing in background…');
           } else {
-            setRetryStatus(`Retrying... (Attempt ${attempt} of ${maxRetries})`);
+            setRetryStatus(`Retrying… (attempt ${attempt} of ${maxRetries})`);
           }
         });
-        const transformedProjects = transformProjectsData(projectsData);
-        setProjects(transformedProjects);
+        if (cancelled) return;
+        setProjects(transformProjectsData(projectsData));
         setRetryStatus('');
+        setError(null);
       } catch (err) {
-        setError(err.message);
-        setRetryStatus('');
+        if (cancelled) return;
+        if (snapshotList) {
+          setRetryStatus('Could not reach server — showing saved project list.');
+        } else {
+          setError(err.message);
+          setRetryStatus('');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+          setIsRefreshing(false);
+        }
       }
     };
 
     loadProjects();
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  // Transform backend data to frontend format
-  const transformProjectsData = (backendProjects) => {
-    return backendProjects.map(project => ({
-      ...project,
-      // Map backend field names to frontend expectations
-      repoUrl: project.repo_url,
-      liveUrl: project.live_url,
-      techStack: project.tech_stack || [],
-      // Transform tech_stack to technologies format with icons
-      technologies: (project.tech_stack || []).map(tech => ({
-        name: tech,
-        icon: getIcon(tech)
-      })),
-      // Provide defaults for missing fields
-      features: [],
-      screenshots: [],
-      challenges: [],
-      approach: [],
-      results: []
-    }));
-  };
 
   // Load saved layouts from localStorage if available
   useEffect(() => {
@@ -147,31 +189,6 @@ function Portfolio() {
     generateDefaultLayouts();
   };
 
-  // Icon mapping function
-  const getIcon = (tech) => {
-    const iconMap = {
-      'React': <FaReact />,
-      'ReactJS': <FaReact />,
-      'TailwindCSS': <SiTailwindcss />,
-      'Tailwind': <SiTailwindcss />,
-      'TypeScript': <SiTypescript />,
-      'JavaScript': <SiJavascript />,
-      'Node.js': <FaNodeJs />,
-      'NodeJS': <FaNodeJs />,
-      'Express': <SiExpress />,
-      'ExpressJS': <SiExpress />,
-      'MongoDB': <SiMongodb />,
-      'Firebase': <FaFire />,
-      'Bootstrap': <FaBootstrap />,
-      'HTML': <SiHtml5 />,
-      'CSS': <SiCss3 />,
-      'Vite': <SiVite />,
-      'Unity': <BiCodeAlt />,
-      'C#': <BiCodeAlt />
-    };
-    return iconMap[tech] || <BiCodeAlt />;
-  };
-
   const handleProjectSelect = (project) => {
     setSelectedProject(project);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -222,6 +239,11 @@ function Portfolio() {
           <p className="max-w-3xl mx-auto text-lg text-gray-600 dark:text-gray-400 text-center mb-8">
             Here are some of the projects I've worked on throughout my career
           </p>
+          {(isRefreshing || retryStatus) && (
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6" role="status">
+              {isRefreshing && !retryStatus ? 'Loading latest from server…' : retryStatus}
+            </p>
+          )}
           
           {/* Private Project Explanation */}
           <div className="mb-10 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-6 max-w-3xl mx-auto">

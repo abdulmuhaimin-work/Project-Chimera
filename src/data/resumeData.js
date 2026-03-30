@@ -3,10 +3,10 @@ import { fetchWorkExperiences } from '../services/api';
 // Static data that doesn't change often
 export const resumeData = {
   personalInfo: {
-    name: "Abdul Muhaimin",
+    name: "Abdul Muhaimin bin Md Shahid",
     title: "Full Stack Developer",
     phone: "+60135932043",
-    location: "Semenyih, Malaysia",
+    location: "Semenyih, Selangor, Malaysia",
     email: "abdulmuhaimin.work@gmail.com",
     linkedin: "https://www.linkedin.com/in/abdul-muhaimin-md-shahid/",
     github: "https://github.com/abdulmuhaimin-work",

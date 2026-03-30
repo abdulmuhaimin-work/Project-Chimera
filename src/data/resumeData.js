@@ -14,7 +14,7 @@ export const resumeData = {
     website: "https://abdulmuhaimin.my/"
   },
   
-  summary: "With over 4 years of hands-on experience in  building modern, user-centric web applications, I specialize in  full-stack development with a strong focus on frontend technologies such  as React, Next.js, and Drupal. At Credence and in previous roles, I  have excelled in agile environments—delivering scalable solutions and  intuitive user experiences for clients ranging from startups to  established tech firms. I'm passionate about remote-first work cultures and believe in leveraging technology to connect, collaborate,  and innovate from anywhere in the world. Let's connect if you’re looking for a developer who’s committed to quality, efficiency, and continuous  learning.",
+  summary: "With over 5 years of hands-on experience in  building modern, user-centric web applications, I specialize in  full-stack development with a strong focus on frontend technologies such  as React, Next.js, and Drupal. At Credence and in previous roles, I  have excelled in agile environments—delivering scalable solutions and  intuitive user experiences for clients ranging from startups to  established tech firms. I'm passionate about remote-first work cultures and believe in leveraging technology to connect, collaborate,  and innovate from anywhere in the world. Let's connect if you’re looking for a developer who’s committed to quality, efficiency, and continuous  learning.",
   
   education: {
     degree: "Bachelors Degree in Mechanical Engineering",

@@ -513,7 +513,9 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           </div>
           
           <div class="section">
+            ${resumeData.references.length > 0 ? `
             <h3>References</h3>
+            ` : ''}
             <div class="references-container">
               ${resumeData.references.map(reference => `
                 <div class="reference-item">

@@ -47,24 +47,24 @@ export const resumeData = {
   ],
 
   references: [
-    {
-      name: "Nasrul Muhaimin Mohd Zain",
-      title: "Head of Software Engineering, Nematix",
-      email: "nasminzain@gmail.com",
-      phone: null
-    },
-    {
-      name: "Syarizatul Nadia binti Rosdi", 
-      title: "Product Manager, PinC Technology Sdn Bhd",
-      email: "nadiarosdie@gmail.com",
-      phone: "+60133935959"
-    },
-    {
-      name: "Ishraf Shafiq Zainuddin",
-      title: "QA Tester, REKA INISIATIF SDN. BHD",
-      email: "zainshafiq594@gmail.com",
-      phone: "+60129065572"
-    }
+    // {
+    //   name: "Nasrul Muhaimin Mohd Zain",
+    //   title: "Head of Software Engineering, Nematix",
+    //   email: "nasminzain@gmail.com",
+    //   phone: null
+    // },
+    // {
+    //   name: "Syarizatul Nadia binti Rosdi", 
+    //   title: "Product Manager, PinC Technology Sdn Bhd",
+    //   email: "nadiarosdie@gmail.com",
+    //   phone: "+60133935959"
+    // },
+    // {
+    //   name: "Ishraf Shafiq Zainuddin",
+    //   title: "QA Tester, REKA INISIATIF SDN. BHD",
+    //   email: "zainshafiq594@gmail.com",
+    //   phone: "+60129065572"
+    // }
   ],
   
   // Additional data for website components

@@ -34,12 +34,12 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
   const { personalInfo, summary, education, certificates, skills, languages, references } = resumeData;
 
   const contactParts = [
-    personalInfo.location,
-    personalInfo.phone,
-    personalInfo.email,
-    personalInfo.website,
-    personalInfo.linkedin,
-    personalInfo.github,
+    personalInfo.location ? { label: 'Location', value: personalInfo.location } : null,
+    personalInfo.phone ? { label: 'Phone', value: personalInfo.phone } : null,
+    personalInfo.email ? { label: 'Email', value: personalInfo.email } : null,
+    personalInfo.website ? { label: 'Website', value: personalInfo.website } : null,
+    personalInfo.linkedin ? { label: 'LinkedIn', value: personalInfo.linkedin } : null,
+    personalInfo.github ? { label: 'GitHub', value: personalInfo.github } : null,
   ].filter(Boolean);
 
   return `
@@ -87,9 +87,8 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
           margin-top: 4pt;
           line-height: 1.5;
         }
-        .contact-info span + span::before {
-          content: " • ";
-          color: #888;
+        .contact-info div {
+          margin-bottom: 1pt;
         }
 
         .section { margin-top: 12pt; }
@@ -217,7 +216,7 @@ export const generateResumeHTML = async (workExperiences = null, projects = null
         <h1>${personalInfo.name}</h1>
         <h2>${personalInfo.title}</h2>
         <div class="contact-info">
-          ${contactParts.map(part => `<span>${part}</span>`).join('')}
+          ${contactParts.map(part => `<div><strong>${part.label}:</strong> ${part.value}</div>`).join('')}
         </div>
       </header>
 
